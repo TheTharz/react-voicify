@@ -15,20 +15,20 @@ This project is a React component that converts text to speech using the Web Spe
 To install the package, use npm or yarn:
 
 ```bash
-npm install react-text-to-speech
+npm install react-speakify
 ```
 
 or
 
 ```bash
-yarn add react-text-to-speech
+yarn add react-speakify
 ```
 
 ## Usage
 
 ```jsx
 import React from 'react';
-import TextToSpeech from 'react-text-to-speech';
+import TextToSpeech from 'react-speakify';
 
 const App = () => {
   return (
