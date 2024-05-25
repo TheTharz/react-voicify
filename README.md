@@ -1,7 +1,3 @@
-Certainly! Here's the full documentation with the props section presented as a table:
-
----
-
 # React Text to Speech
 
 Welcome to the React Text to Speech package documentation. This package provides a React component for converting text to speech, offering a range of customizable options for voice, rate, pitch, and volume.
