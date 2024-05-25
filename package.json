@@ -1,7 +1,6 @@
 {
-  "name": "react-text-to-speech",
-  "version": "0.1.0",
-  "private": true,
+  "name": "react-speakify",
+  "version": "0.1.2",
   "description": "This project is a React component that converts text to speech using the Web Speech API. The component allows users to select different voices, adjust the speech rate, pitch, and volume, and control playback with play, pause, and stop buttons. The component is styled using inline CSS.",
   "keywords": [
     "react",
@@ -13,7 +12,7 @@
   "module": "dist/index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TheTharz/react-text-to-speech.git"
+    "url": "git+https://github.com/TheTharz/react-speakify.git"
   },
   "scripts": {
     "test": "jest",
