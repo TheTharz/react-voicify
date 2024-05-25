@@ -1,20 +1,33 @@
 import React, { useState, useEffect } from 'react';
 
-const TextToSpeech = ({ text }) => {
-  const [isPaused, setIsPaused] = useState(false);
-  const [utterance, setUtterance] = useState(null);
-  const [voices, setVoices] = useState([]);
-  const [selectedVoice, setSelectedVoice] = useState(null);
-  const [rate, setRate] = useState(1);
-  const [pitch, setPitch] = useState(1);
-  const [volume, setVolume] = useState(1);
+interface Voice {
+  name: string;
+  lang: string;
+}
+
+interface TextToSpeechProps {
+  text: string;
+}
+
+export const TextToSpeech: React.FC<TextToSpeechProps> = ({ text }) => {
+  const [isPaused, setIsPaused] = useState<boolean>(false);
+  const [utterance, setUtterance] = useState<
+    SpeechSynthesisUtterance | undefined
+  >(undefined);
+  const [voices, setVoices] = useState<Voice[]>([]);
+  const [selectedVoice, setSelectedVoice] = useState<string | null>(null);
+  const [rate, setRate] = useState<number>(1);
+  const [pitch, setPitch] = useState<number>(1);
+  const [volume, setVolume] = useState<number>(1);
 
   useEffect(() => {
     const synth = window.speechSynthesis;
 
     const fetchVoices = () => {
       const voiceList = synth.getVoices();
-      setVoices(voiceList);
+      setVoices(
+        voiceList.map((voice) => ({ name: voice.name, lang: voice.lang }))
+      );
 
       if (voiceList.length > 0) {
         setSelectedVoice(voiceList[0].name);
@@ -36,12 +49,19 @@ const TextToSpeech = ({ text }) => {
 
   useEffect(() => {
     if (utterance) {
-      utterance.voice = voices.find((voice) => voice.name === selectedVoice);
+      const selected = voices.find((voice) => voice.name === selectedVoice);
+      if (selected) {
+        utterance.voice = synth
+          .getVoices()
+          .find((voice) => voice.name === selectedVoice)!;
+      }
       utterance.rate = rate;
       utterance.pitch = pitch;
       utterance.volume = volume;
     }
   }, [utterance, selectedVoice, rate, pitch, volume, voices]);
+
+  const synth = window.speechSynthesis;
 
   const handlePlay = () => {
     const synth = window.speechSynthesis;
@@ -49,25 +69,28 @@ const TextToSpeech = ({ text }) => {
     if (isPaused) {
       synth.resume();
     } else {
-      synth.speak(utterance);
+      if (utterance) {
+        synth.speak(utterance);
+      } else {
+        // If utterance is undefined, you may want to handle this case accordingly.
+        console.error('Utterance is undefined');
+      }
     }
 
     setIsPaused(false);
   };
 
   const handlePause = () => {
-    const synth = window.speechSynthesis;
     synth.pause();
     setIsPaused(true);
   };
 
   const handleStop = () => {
-    const synth = window.speechSynthesis;
     synth.cancel();
     setIsPaused(false);
   };
 
-  const styles = {
+  const styles: { [key: string]: React.CSSProperties } = {
     container: {
       maxWidth: '400px',
       margin: 'auto',
@@ -110,7 +133,7 @@ const TextToSpeech = ({ text }) => {
           Voice:
           <select
             style={styles.input}
-            value={selectedVoice}
+            value={selectedVoice || ''}
             onChange={(e) => setSelectedVoice(e.target.value)}
           >
             {voices.map((voice) => (
@@ -131,7 +154,7 @@ const TextToSpeech = ({ text }) => {
             max='2'
             step='0.1'
             value={rate}
-            onChange={(e) => setRate(e.target.value)}
+            onChange={(e) => setRate(parseFloat(e.target.value))}
           />
         </label>
       </div>
@@ -145,7 +168,7 @@ const TextToSpeech = ({ text }) => {
             max='2'
             step='0.1'
             value={pitch}
-            onChange={(e) => setPitch(e.target.value)}
+            onChange={(e) => setPitch(parseFloat(e.target.value))}
           />
         </label>
       </div>
@@ -159,48 +182,18 @@ const TextToSpeech = ({ text }) => {
             max='1'
             step='0.1'
             value={volume}
-            onChange={(e) => setVolume(e.target.value)}
+            onChange={(e) => setVolume(parseFloat(e.target.value))}
           />
         </label>
       </div>
       <div>
-        <button
-          style={styles.button}
-          onMouseOver={(e) =>
-            (e.target.style.backgroundColor =
-              styles.buttonHover.backgroundColor)
-          }
-          onMouseOut={(e) =>
-            (e.target.style.backgroundColor = styles.button.backgroundColor)
-          }
-          onClick={handlePlay}
-        >
+        <button style={styles.button} onClick={handlePlay}>
           {isPaused ? 'Resume' : 'Play'}
         </button>
-        <button
-          style={styles.button}
-          onMouseOver={(e) =>
-            (e.target.style.backgroundColor =
-              styles.buttonHover.backgroundColor)
-          }
-          onMouseOut={(e) =>
-            (e.target.style.backgroundColor = styles.button.backgroundColor)
-          }
-          onClick={handlePause}
-        >
+        <button style={styles.button} onClick={handlePause}>
           Pause
         </button>
-        <button
-          style={styles.button}
-          onMouseOver={(e) =>
-            (e.target.style.backgroundColor =
-              styles.buttonHover.backgroundColor)
-          }
-          onMouseOut={(e) =>
-            (e.target.style.backgroundColor = styles.button.backgroundColor)
-          }
-          onClick={handleStop}
-        >
+        <button style={styles.button} onClick={handleStop}>
           Stop
         </button>
       </div>
