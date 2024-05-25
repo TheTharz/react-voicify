@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import './TextToSpeech.css';
 
 const TextToSpeech = ({ text }) => {
   const [isPaused, setIsPaused] = useState(false);
@@ -68,12 +67,49 @@ const TextToSpeech = ({ text }) => {
     setIsPaused(false);
   };
 
+  const styles = {
+    container: {
+      maxWidth: '400px',
+      margin: 'auto',
+      padding: '20px',
+      border: '1px solid #ddd',
+      borderRadius: '8px',
+      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+      backgroundColor: '#f9f9f9',
+      fontFamily: 'Arial, sans-serif',
+    },
+    label: {
+      display: 'block',
+      marginBottom: '10px',
+      fontWeight: 'bold',
+    },
+    input: {
+      width: '100%',
+      marginBottom: '20px',
+    },
+    button: {
+      width: '30%',
+      margin: '5px 1%',
+      padding: '10px',
+      border: 'none',
+      borderRadius: '5px',
+      cursor: 'pointer',
+      backgroundColor: '#007bff',
+      color: 'white',
+      fontSize: '16px',
+    },
+    buttonHover: {
+      backgroundColor: '#0056b3',
+    },
+  };
+
   return (
-    <div className='text-to-speech'>
+    <div style={styles.container}>
       <div>
-        <label>
+        <label style={styles.label}>
           Voice:
           <select
+            style={styles.input}
             value={selectedVoice}
             onChange={(e) => setSelectedVoice(e.target.value)}
           >
@@ -86,9 +122,10 @@ const TextToSpeech = ({ text }) => {
         </label>
       </div>
       <div>
-        <label>
+        <label style={styles.label}>
           Rate: {rate}
           <input
+            style={styles.input}
             type='range'
             min='0.5'
             max='2'
@@ -99,9 +136,10 @@ const TextToSpeech = ({ text }) => {
         </label>
       </div>
       <div>
-        <label>
+        <label style={styles.label}>
           Pitch: {pitch}
           <input
+            style={styles.input}
             type='range'
             min='0'
             max='2'
@@ -112,9 +150,10 @@ const TextToSpeech = ({ text }) => {
         </label>
       </div>
       <div>
-        <label>
+        <label style={styles.label}>
           Volume: {volume}
           <input
+            style={styles.input}
             type='range'
             min='0'
             max='1'
@@ -125,9 +164,45 @@ const TextToSpeech = ({ text }) => {
         </label>
       </div>
       <div>
-        <button onClick={handlePlay}>{isPaused ? 'Resume' : 'Play'}</button>
-        <button onClick={handlePause}>Pause</button>
-        <button onClick={handleStop}>Stop</button>
+        <button
+          style={styles.button}
+          onMouseOver={(e) =>
+            (e.target.style.backgroundColor =
+              styles.buttonHover.backgroundColor)
+          }
+          onMouseOut={(e) =>
+            (e.target.style.backgroundColor = styles.button.backgroundColor)
+          }
+          onClick={handlePlay}
+        >
+          {isPaused ? 'Resume' : 'Play'}
+        </button>
+        <button
+          style={styles.button}
+          onMouseOver={(e) =>
+            (e.target.style.backgroundColor =
+              styles.buttonHover.backgroundColor)
+          }
+          onMouseOut={(e) =>
+            (e.target.style.backgroundColor = styles.button.backgroundColor)
+          }
+          onClick={handlePause}
+        >
+          Pause
+        </button>
+        <button
+          style={styles.button}
+          onMouseOver={(e) =>
+            (e.target.style.backgroundColor =
+              styles.buttonHover.backgroundColor)
+          }
+          onMouseOut={(e) =>
+            (e.target.style.backgroundColor = styles.button.backgroundColor)
+          }
+          onClick={handleStop}
+        >
+          Stop
+        </button>
       </div>
     </div>
   );
