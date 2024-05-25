@@ -57,7 +57,7 @@ export default App;
 
 ```tsx
 import React from 'react';
-import TextToSpeech from 'yreact-voicify';
+import TextToSpeech from 'react-voicify';
 
 const App = () => {
   return (
@@ -92,7 +92,7 @@ The component provides three buttons to control the speech synthesis:
 
 ```tsx
 import React from 'react';
-import TextToSpeech from 'your-npm-package-name';
+import TextToSpeech from 'react-voicify';
 
 const App = () => {
   return (
