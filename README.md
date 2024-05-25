@@ -1,4 +1,4 @@
-# TextToSpeech
+# react-voicify
 
 A React component for text-to-speech functionality with customizable voice, rate, pitch, and volume.
 
